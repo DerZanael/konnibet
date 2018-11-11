@@ -1,0 +1,47 @@
+application:
+  image: ubuntu:bionic
+  volumes:
+    - ./project:/var/www/project
+  tty: true
+  container_name: kn_application
+
+apache:
+  build: .docker/apache
+  ports:
+    - 80:80
+  volumes:
+    - .docker/config/vhosts:/etc/apache2/sites-enabled
+  volumes_from:
+    - application
+  container_name: kn_apache
+
+db:
+  image: "mysql:5.7"
+  environment:
+    - MYSQL_ROOT_PASSWORD=root
+  volumes:
+    - ./docker/data/mysql:/var/lib/mysql
+  container_name: kn_db
+
+php:
+  build: php
+  volumes_from:
+    - application
+  links:
+    - db
+  ports:
+    - 9000
+  container_name: kn_php
+
+phpmyadmin:
+  image: phpmyadmin/phpmyadmin
+  environment:
+    PMA_HOST: mysql
+    PMA_PORT: 3306
+  ports:
+    - 8080:80
+  links:
+    - mysql
+  depends_on:
+    - php
+  container_name: kn_phpmyadmin
