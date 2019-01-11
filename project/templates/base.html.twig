@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>{% block title %}Konnibet{% endblock %}</title>
+      <meta name="description" content="{% block mdescription %}{% endblock %}">
+      <meta name="keywords" content="{% block mkeywords %}{% endblock %}">
+      <link rel="icon" type="image/png" href="{#{asset("favicon.png")}#}" />
+
+      {% block stylesheets %}{% endblock %}{# inclusions de feuilles de style #}
+      {% block csslocal %}{% endblock %}{# code css custom #}
+      {% block javascripts %}{% endblock %}{# inclusion de fichiers/lib JS #}
+  </head>
+  <body id="topBody">
+
+  {% block header %}
+
+  {% endblock %}
+
+  {% block ariane %}
+
+  {% endblock %}
+
+  {% block body %}
+
+  {% endblock %}
+
+  {% block footer %}
+  {% endblock %}
+
+  
+  {% block jslocal %}{% endblock %}
+  </body>
+</html>
