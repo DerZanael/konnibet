@@ -40,7 +40,7 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
 
 RUN echo "dev ALL=(ALL) ALL" > /etc/sudoers
 
-WORKDIR /var/www/
+WORKDIR /var/www/project
 ##</romaricp>##
 
 EXPOSE 9000
