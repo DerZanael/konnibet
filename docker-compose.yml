@@ -1,47 +1,60 @@
-application:
-  image: ubuntu:bionic
-  volumes:
-    - ./project:/var/www/project
-  tty: true
-  container_name: kn_application
+version: "3.2"
+services:
+  application:
+    image: ubuntu:bionic
+#    volumes:
+#      - ./project:/var/www/project
+    tty: true
+    container_name: kn_application
 
-apache:
-  build: .docker/apache
-  ports:
-    - 80:80
-  volumes:
-    - .docker/config/vhosts:/etc/apache2/sites-enabled
-  volumes_from:
-    - application
-  container_name: kn_apache
+  apache:
+    build: ./docker/apache
+    ports:
+      - 8080:80
+      - 8000:8000
+    volumes:
+      - ./docker/config/vhosts:/etc/apache2/sites-enabled
+      - ./project:/var/www/project
+    networks:
+      - frontend
+      - backend
+    container_name: kn_apache
 
-db:
-  image: "mysql:5.7"
-  environment:
-    - MYSQL_ROOT_PASSWORD=root
-  volumes:
-    - ./docker/data/mysql:/var/lib/mysql
-  container_name: kn_db
+  db:
+#    image: "mysql:latest"
+    image: "mariadb:10.4"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./docker/data/mysqldb:/var/lib/mysql
+    networks:
+      - backend
+    container_name: kn_db
 
-php:
-  build: php
-  volumes_from:
-    - application
-  links:
-    - db
-  ports:
-    - 9000
-  container_name: kn_php
+  php:
+    build: ./docker/php
+    volumes:
+      - ./project:/var/www/project:Z
+    ports:
+      - 9000
+    networks:
+      - frontend
+      - backend
+    container_name: kn_php
 
-phpmyadmin:
-  image: phpmyadmin/phpmyadmin
-  environment:
-    PMA_HOST: mysql
-    PMA_PORT: 3306
-  ports:
-    - 8080:80
-  links:
-    - mysql
-  depends_on:
-    - php
-  container_name: kn_phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    ports:
+      - 8081:80
+    networks:
+      - frontend
+      - backend
+    container_name: kn_phpmyadmin
+volumes:
+  mysqldb:  {}
+networks:
+  frontend:
+  backend:

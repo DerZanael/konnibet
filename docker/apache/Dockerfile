@@ -16,4 +16,5 @@ ServerName localhost \
 ' /etc/apache2/apache2.conf
 EXPOSE 80 443
 RUN rm -f /run/apache2/apache2.pid
+RUN chmod -R +x /var/www/project
 CMD apachectl  -DFOREGROUND -e info
