@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -77,6 +79,16 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $isSuperAdmin;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Bet", mappedBy="user")
+     */
+    private $bets;
+
+    public function __construct()
+    {
+        $this->bets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -257,6 +269,37 @@ class User implements UserInterface
     public function setIsSuperAdmin(bool $isSuperAdmin): self
     {
         $this->isSuperAdmin = $isSuperAdmin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bet[]
+     */
+    public function getBets(): Collection
+    {
+        return $this->bets;
+    }
+
+    public function addBet(Bet $bet): self
+    {
+        if (!$this->bets->contains($bet)) {
+            $this->bets[] = $bet;
+            $bet->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBet(Bet $bet): self
+    {
+        if ($this->bets->contains($bet)) {
+            $this->bets->removeElement($bet);
+            // set the owning side to null (unless already changed)
+            if ($bet->getUser() === $this) {
+                $bet->setUser(null);
+            }
+        }
 
         return $this;
     }
