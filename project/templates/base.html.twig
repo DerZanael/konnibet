@@ -3,33 +3,103 @@
   <head>
     <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>{% block title %}Konnibet{% endblock %}</title>
-      <meta name="description" content="{% block mdescription %}{% endblock %}">
+      <title>{% block title %}{{site_name}} - Free to have fun e-sports betting{% endblock %}</title>
+      <meta name="application-name" content="{{site_name}} Experimental">
+      <meta name="description" content="{% block mdescription %}{{site_name}} is an experimental project{% endblock %}">
       <meta name="keywords" content="{% block mkeywords %}{% endblock %}">
+      <meta name="author" content="François Deschamps - francois@fdweb.fr">
       <link rel="icon" type="image/png" href="{#{asset("favicon.png")}#}" />
-
-      {% block stylesheets %}{% endblock %}{# inclusions de feuilles de style #}
-      {% block csslocal %}{% endblock %}{# code css custom #}
-      {% block javascripts %}{% endblock %}{# inclusion de fichiers/lib JS #}
+      {# BOOTSTRAP CSS #}
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+      {% block stylesheets %}{% endblock %}{# custom css files inclusions #}
+      {% block csslocal %}{% endblock %}{# custom css codes #}
+      {# JQUERY POPPER BOOTSTRAP JS #}
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+      {# FONT AWESOME #}
+      <script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+      {% block javascripts %}{% endblock %}{# JS libs and script files inclusions #}
   </head>
   <body id="topBody">
 
   {% block header %}
+  <header id="header-page">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <a class="navbar-brand" href="{{path("homepage")}}" title="Return to the homepage of {{site_name}}">{{site_name}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#site-menu" aria-controls="site-menu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div id="site-menu" class="collapse navbar-collapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" href="#">Hey</a></li>
+          </ul>
+          <div id="site-access">
+            {% if app.user %}
+              {% if is_granted("ROLE_ADMIN") %}{# user is logged as admin #}
+              <a href="#" title="Create a new match" class="btn btn-primary"><i class="fa fa-plus"></i> New match</a>
+              <a href="#" title="Administration access" class="btn btn-warning"><i class="fa fa-cog"></i> Admin</a>
+              {% endif %}
+              <a href="#" title="Account summary" class="btn btn-info"><i class="fa fa-user"></i> Your account</a>
+              <a href="{{path("app_logout")}}" class="btn btn-danger" title="Logout from {{site_name}}"><i class="fa fa-sign-out-alt"></i> Logout</a>
+            {% else %}
+              {% if no_login is not defined or not no_login %}
+              <button class="btn btn-primary" data-toggle="modal" data-target="#modal-login"><i class="fa fa-user"></i> Login</button>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
   {% endblock %}
 
   {% block ariane %}
 
   {% endblock %}
 
+  <section class="my-4">
+    <div class="container">
   {% block body %}
-
   {% endblock %}
+    </div>
+  </section>
 
   {% block footer %}
+  <footer>
+    <div class="bg-dark">
+      <div class="container">
+        <p class="text-center text-light py-4">{{site_name}} : An experimental project - Cafted by <a href="http://www.fdweb.fr/" target="_blank" rel="noopened" class="text-primary"><i class="fa fa-external-link-square-alt"> </i> François Deschamps</a> - <a href="https://github.com/DerZanael/konnibet" target="_blank" rel="noopener" class="text-info"><i class="fab fa-github"></i> Github</a></p>
+      </div>
+    </div>
+  </footer>
   {% endblock %}
 
-  
-  {% block jslocal %}{% endblock %}
+  {% block modals %}
+    {% if not app.user and (no_login is not defined or not no_login) %}
+    <div id="modal-login" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title"><i class="fa fa-user"> </i> Login to {{site_name}}</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            {% include "security/form.html.twig" with {  } %}
+          </div>
+          <div class="modal-footer">
+            <p class="text-muted">No account yet ? <a href="#" title="Register to {{site_name}}" class="btn btn-info btn-sm">Create a new account</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% block modalslocal %}{% endblock %}{# convenient place to add new modals #}
+  {% endblock %}
+
+
+  {% block jslocal %}{% endblock %}{# local JS code #}
   </body>
 </html>

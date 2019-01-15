@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% set test = "yo" %}
-{% block title %}Log in!{% endblock %}
+{% set no_login = true %}
+{% block title %}Log in to your {{site_name}} account{% endblock %}
 
 {% block body %}
 {% if error %}
