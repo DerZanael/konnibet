@@ -45,8 +45,8 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'email' => $request->request->get('email'),
-            'password' => $request->request->get('password'),
+            'email' => $request->request->get('login_email'),
+            'password' => $request->request->get('login_password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
@@ -69,6 +69,12 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
+        }
+        if(!$user->getIsValid()) {
+            throw new CustomUserMessageAuthenticationException('The email adress for this account has not been validated yet');
+        }
+        if($user->getIsBanned()) {
+            throw new CustomUserMessageAuthenticationException('This account has been banned');
         }
 
         return $user;
