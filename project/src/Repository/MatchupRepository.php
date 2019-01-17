@@ -2,17 +2,17 @@
 
 namespace App\Repository;
 
-use App\Entity\Match;
+use App\Entity\Matchup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Match|null find($id, $lockMode = null, $lockVersion = null)
- * @method Match|null findOneBy(array $criteria, array $orderBy = null)
- * @method Match[]    findAll()
- * @method Match[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Matchup|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Matchup|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Matchup[]    findAll()
+ * @method Matchup[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MatchRepository extends ServiceEntityRepository
+class MatchupRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -20,7 +20,7 @@ class MatchRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Match[] Returns an array of Match objects
+    //  * @return Matchup[] Returns an array of Matchup objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class MatchRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Match
+    public function findOneBySomeField($value): ?Matchup
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.exampleField = :val')

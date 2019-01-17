@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MatchRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MatchupRepository")
  */
-class Match
+class Matchup
 {
     /**
      * @ORM\Id()
@@ -69,7 +69,7 @@ class Match
     private $winCompetitor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="matches")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="matchups")
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
@@ -80,13 +80,13 @@ class Match
     private $bets;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Competitor", inversedBy="matches1")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Competitor", inversedBy="matchups1")
      * @ORM\JoinColumn(nullable=false)
      */
     private $comp1;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Competitor", inversedBy="matches2")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Competitor", inversedBy="matchups2")
      * @ORM\JoinColumn(nullable=false)
      */
     private $comp2;

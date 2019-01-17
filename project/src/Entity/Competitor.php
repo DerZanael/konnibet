@@ -39,40 +39,46 @@ class Competitor
     private $isTeam;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $url;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Match", mappedBy="winCompetitor")
+     * @ORM\OneToMany(targetEntity="App\Entity\Matchup", mappedBy="winCompetitor")
      */
     private $wins;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Match", mappedBy="comp1")
+     * @ORM\OneToMany(targetEntity="App\Entity\Matchup", mappedBy="comp1")
      */
-    private $matches1;
+    private $matchups1;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Match", mappedBy="comp2")
+     * @ORM\OneToMany(targetEntity="App\Entity\Matchup", mappedBy="comp2")
      */
-    private $matches2;
+    private $matchups2;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $pic;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\VideoGame", inversedBy="competitors")
+     */
+    private $videogames;
+
     public function __construct()
     {
         $this->wins = new ArrayCollection();
-        $this->matches1 = new ArrayCollection();
-        $this->matches2 = new ArrayCollection();
+        $this->matchups1 = new ArrayCollection();
+        $this->matchups2 = new ArrayCollection();
+        $this->videogames = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,14 +159,14 @@ class Competitor
     }
 
     /**
-     * @return Collection|Match[]
+     * @return Collection|Matchup[]
      */
     public function getWins(): Collection
     {
         return $this->wins;
     }
 
-    public function addWin(Match $win): self
+    public function addWin(Matchup $win): self
     {
         if (!$this->wins->contains($win)) {
             $this->wins[] = $win;
@@ -170,7 +176,7 @@ class Competitor
         return $this;
     }
 
-    public function removeWin(Match $win): self
+    public function removeWin(Matchup $win): self
     {
         if ($this->wins->contains($win)) {
             $this->wins->removeElement($win);
@@ -184,30 +190,30 @@ class Competitor
     }
 
     /**
-     * @return Collection|Match[]
+     * @return Collection|Matchup[]
      */
-    public function getMatches1(): Collection
+    public function getMatchups1(): Collection
     {
-        return $this->matches1;
+        return $this->matchups1;
     }
 
-    public function addMatches1(Match $matches1): self
+    public function addMatchups1(Matchup $matchups1): self
     {
-        if (!$this->matches1->contains($matches1)) {
-            $this->matches1[] = $matches1;
-            $matches1->setComp1($this);
+        if (!$this->matchups1->contains($matchups1)) {
+            $this->matchups1[] = $matchups1;
+            $matchups1->setComp1($this);
         }
 
         return $this;
     }
 
-    public function removeMatches1(Match $matches1): self
+    public function removeMatchups1(Matchup $matchups1): self
     {
-        if ($this->matches1->contains($matches1)) {
-            $this->matches1->removeElement($matches1);
+        if ($this->matchups1->contains($matchups1)) {
+            $this->matchups1->removeElement($matchups1);
             // set the owning side to null (unless already changed)
-            if ($matches1->getComp1() === $this) {
-                $matches1->setComp1(null);
+            if ($matchups1->getComp1() === $this) {
+                $matchups1->setComp1(null);
             }
         }
 
@@ -215,30 +221,30 @@ class Competitor
     }
 
     /**
-     * @return Collection|Match[]
+     * @return Collection|Matchup[]
      */
-    public function getMatches2(): Collection
+    public function getMatchups2(): Collection
     {
-        return $this->matches2;
+        return $this->matchups2;
     }
 
-    public function addMatches2(Match $matches2): self
+    public function addMatchups2(Matchup $matchups2): self
     {
-        if (!$this->matches2->contains($matches2)) {
-            $this->matches2[] = $matches2;
-            $matches2->setComp2($this);
+        if (!$this->matchups2->contains($matchups2)) {
+            $this->matchups2[] = $matchups2;
+            $matchups2->setComp2($this);
         }
 
         return $this;
     }
 
-    public function removeMatches2(Match $matches2): self
+    public function removeMatchups2(Matchup $matchups2): self
     {
-        if ($this->matches2->contains($matches2)) {
-            $this->matches2->removeElement($matches2);
+        if ($this->matchups2->contains($matchups2)) {
+            $this->matchups2->removeElement($matchups2);
             // set the owning side to null (unless already changed)
-            if ($matches2->getComp2() === $this) {
-                $matches2->setComp2(null);
+            if ($matchups2->getComp2() === $this) {
+                $matchups2->setComp2(null);
             }
         }
 
@@ -253,6 +259,32 @@ class Competitor
     public function setPic(string $pic): self
     {
         $this->pic = $pic;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VideoGame[]
+     */
+    public function getVideogames(): Collection
+    {
+        return $this->videogames;
+    }
+
+    public function addVideogame(VideoGame $videogame): self
+    {
+        if (!$this->videogames->contains($videogame)) {
+            $this->videogames[] = $videogame;
+        }
+
+        return $this;
+    }
+
+    public function removeVideogame(VideoGame $videogame): self
+    {
+        if ($this->videogames->contains($videogame)) {
+            $this->videogames->removeElement($videogame);
+        }
 
         return $this;
     }

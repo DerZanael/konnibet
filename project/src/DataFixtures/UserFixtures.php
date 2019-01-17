@@ -10,6 +10,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserFixtures extends Fixture
 {
     private $passwordEncoder;
+    public const SHIG_REF = "shig";
+    public const HH_REF = "hogan";
+    public const ANDRE_REF = "andre";
+    public const PIPER_REF = "piper";
+    public const SHAWN_REF = "shawn";
+    public const TAKER_REF = "taker";
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -87,5 +93,12 @@ class UserFixtures extends Fixture
         $manager->persist($taker);
 
         $manager->flush();
+        //For further use in other fixtures
+        $this->addReference(self::SHIG_REF, $shig);
+        $this->addReference(self::HH_REF, $hogan);
+        $this->addReference(self::ANDRE_REF, $andre);
+        $this->addReference(self::PIPER_REF, $rowdy);
+        $this->addReference(self::SHAWN_REF, $shawn);
+        $this->addReference(self::TAKER_REF, $taker);
     }
 }

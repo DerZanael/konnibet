@@ -63,10 +63,16 @@ class VideoGame
      */
     private $pic;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Competitor", mappedBy="videogames")
+     */
+    private $competitors;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->competitors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -211,6 +217,34 @@ class VideoGame
     public function setPic(string $pic): self
     {
         $this->pic = $pic;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Competitor[]
+     */
+    public function getCompetitors(): Collection
+    {
+        return $this->competitors;
+    }
+
+    public function addCompetitor(Competitor $competitor): self
+    {
+        if (!$this->competitors->contains($competitor)) {
+            $this->competitors[] = $competitor;
+            $competitor->addVideogame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetitor(Competitor $competitor): self
+    {
+        if ($this->competitors->contains($competitor)) {
+            $this->competitors->removeElement($competitor);
+            $competitor->removeVideogame($this);
+        }
 
         return $this;
     }

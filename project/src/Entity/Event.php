@@ -50,14 +50,14 @@ class Event
     private $streams;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Match", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="App\Entity\Matchup", mappedBy="event")
      */
-    private $matches;
+    private $matchups;
 
     public function __construct()
     {
         $this->streams = new ArrayCollection();
-        $this->matches = new ArrayCollection();
+        $this->matchups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,30 +152,30 @@ class Event
     }
 
     /**
-     * @return Collection|Match[]
+     * @return Collection|Matchup[]
      */
-    public function getMatches(): Collection
+    public function getMatchups(): Collection
     {
-        return $this->matches;
+        return $this->matchups;
     }
 
-    public function addMatch(Match $match): self
+    public function addMatch(Matchup $matchup): self
     {
-        if (!$this->matches->contains($match)) {
-            $this->matches[] = $match;
-            $match->setEvent($this);
+        if (!$this->matchups->contains($matchup)) {
+            $this->matchups[] = $matchup;
+            $matchup->setEvent($this);
         }
 
         return $this;
     }
 
-    public function removeMatch(Match $match): self
+    public function removeMatch(Matchup $matchup): self
     {
-        if ($this->matches->contains($match)) {
-            $this->matches->removeElement($match);
+        if ($this->matchups->contains($matchup)) {
+            $this->matchups->removeElement($matchup);
             // set the owning side to null (unless already changed)
-            if ($match->getEvent() === $this) {
-                $match->setEvent(null);
+            if ($matchup->getEvent() === $this) {
+                $matchup->setEvent(null);
             }
         }
 

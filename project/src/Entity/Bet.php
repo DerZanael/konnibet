@@ -48,7 +48,7 @@ class Bet
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Match", inversedBy="bets")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Matchup", inversedBy="bets")
      * @ORM\JoinColumn(nullable=false)
      */
     private $matchup;
@@ -136,12 +136,12 @@ class Bet
         return $this;
     }
 
-    public function getMatchup(): ?Match
+    public function getMatchup(): ?Matchup
     {
         return $this->matchup;
     }
 
-    public function setMatchup(?Match $matchup): self
+    public function setMatchup(?Matchup $matchup): self
     {
         $this->matchup = $matchup;
 

@@ -33,6 +33,11 @@ class Genre
      */
     private $videoGames;
 
+    /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private $acronym;
+
     public function __construct()
     {
         $this->videoGames = new ArrayCollection();
@@ -91,6 +96,18 @@ class Genre
             $this->videoGames->removeElement($videoGame);
             $videoGame->removeGenre($this);
         }
+
+        return $this;
+    }
+
+    public function getAcronym(): ?string
+    {
+        return $this->acronym;
+    }
+
+    public function setAcronym(string $acronym): self
+    {
+        $this->acronym = $acronym;
 
         return $this;
     }
