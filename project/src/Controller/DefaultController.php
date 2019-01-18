@@ -16,8 +16,6 @@ class DefaultController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        $sg = new Slugify();
-        dump($sg->slugify("frjklhjrf ehvgkj ezvhk KR KJHjhg rk"));
         return $this->render("default/index.html.twig", array(
 
         ));

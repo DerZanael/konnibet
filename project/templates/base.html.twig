@@ -40,7 +40,7 @@
             {% if app.user %}
               {% if is_granted("ROLE_ADMIN") %}{# user is logged as admin #}
               <a href="#" title="Create a new match" class="btn btn-primary"><i class="fa fa-plus"></i> New match</a>
-              <a href="#" title="Administration access" class="btn btn-warning"><i class="fa fa-cog"></i> Admin</a>
+              <a href="{{path("admin_home")}}" title="Administration access" class="btn btn-warning"><i class="fa fa-cog"></i> Admin</a>
               {% endif %}
               <a href="#" title="Account summary" class="btn btn-info"><i class="fa fa-user"></i> Your account</a>
               <a href="{{path("app_logout")}}" class="btn btn-danger" title="Logout from {{site_name}}"><i class="fa fa-sign-out-alt"></i> Logout</a>
