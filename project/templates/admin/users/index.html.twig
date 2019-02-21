@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+{% set inadmin = true %}
+{% block title %}User management - {{site_name}} ADMIN{% endblock %}
+
+{% block body %}
+<div class="float-right">
+  <a href="{{path("admin_users_add")}}" title="Add a new user" class="btn btn-primary"><i class="fa fa-plus"> </i> Add</a>
+</div>
+<h1>User listing</h1>
+
+{% set upath = null %}
+{% for user in users %}
+  {% if loop.first %}
+<div class="table-responsive">
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <td scope="col" class="text-center">#</td>
+      <td scope="col">Username</td>
+      <td scope="col">Email</td>
+      <td scope="col" class="text-center"><i class="fa fa-user-check"> </i> <span class="sr-only">Email validation</span></td>
+      <td scope="col" class="text-center"><i class="fa fa-user-slash"> </i> <span class="sr-only">Ban status</span></td>
+      <td scope="col" class="text-center"><i class="fa fa-user-shield"> </i> <span class="sr-only">User role</span></td>
+      <td class="col">&nbsp;<span class="sr-only">Actions</span></td>
+    </tr>
+  </thead>
+  <tbody>
+  {% endif %}
+  {% set upath = path("admin_users_edit", {id:user.id, seo:user.displayedName|slugify}) %}
+    <tr>
+      <td scope="row" class="text-center">{{user.id}}</td>
+      <td class="col"><a href="{{upath}}" title="Edit {{user.displayedName}}'s profile">{{user.displayedName}}</a></td>
+      <td class="col"><a href="{{upath}}" title="Edit {{user.displayedName}}'s profile">{{user.email}}</a></td>
+      <td><i class="fa fa-{{(user.isValid) ? "check text-success" : "times text-danger"}}"> </i></td>
+      <td>
+        <a href="javascript:void(0);" class="text-{{(user.isBanned) ? "danger" : "muted"}}" data-toggle="modal" data-target="#modal-bans" data-id="{{user.id}}" title="View this user ban status">
+          <i class="fa fa-{{(user.isBanned) ? "exclamation-circle" : "check"}}"> </i>
+        </a>
+      </td>
+      <td><i class="fa fa-user{% if not user.isAdmin %} text-muted{% else %}{{(not user.isSuperAdmin) ? "-tie text-info" : "-astronaut text-success"}}{% endif %}"> </i></td>
+      <td>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="{{upath}}" title="Edit {{user.displayedName}}'s profile" class="text-primary makespin"><i class="fa fa-cog"> </i> <span class="sr-only">Edit profile</span></a></li>
+        </ul>
+      </td>
+    </tr>
+  {% if loop.last %}
+  </tbody>
+</table>
+</div>
+  {% endif %}
+{% else %}
+<p class="alert alert-warning">No user found in the database</p>
+{% endfor %}
+{% endblock %}
+
+{% block modalslocal %}
+<div id="modal-bans" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title"><i class="fa fa-user-slash"> </i> Ban status</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+{% endblock %}
+{% block jslocal %}
+<script>
+var loader = "<p><i class='fa fa-spinner fa-pulse'></i>&nbsp;Loading...</p>";
+$(document).ready(function(){
+  $("#modal-bans").on("show.bs.modal", function(e){
+    $(this).find(".modal-body").html(loader);
+    $.ajax({
+      url: Routing.generate("admin_user_ban_list", {id:$(e.relatedTarget).attr("data-id")}),
+      method: "GET",
+      dataType: "html",
+      data: {},
+      context: this,
+      success: function(resp) {
+          $(this).find(".modal-body").html(resp);
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

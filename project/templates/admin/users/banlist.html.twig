@@ -1,0 +1,13 @@
+{% if user.isBanned %}<p class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> This user is banned</p>{% endif %}
+{% for ban in user.bans %}
+  {% if loop.first %}
+  <ul class="list-group">
+    {% endif %}
+    <li class="list-group-item"><strong>on {{ban.date|date("d/m/Y")}}</strong> by {{ban.admin.displayedName}}
+      <br><i>{{ban.reason}}</i>
+      <br><span class="text-{{(date(ban.dateLift) < date("now")) ? "muted" : "danger"}}">Lifted on <strong>{{ban.dateLift|date("d/m/Y")}}</strong></span>
+    </li>
+    {% if loop.last %}
+  </ul>
+  {% endif  %}
+{% endfor %}

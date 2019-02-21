@@ -70,11 +70,28 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
+        //Checks if the user validated his email
         if(!$user->getIsValid()) {
             throw new CustomUserMessageAuthenticationException('The email adress for this account has not been validated yet');
         }
-        if($user->getIsBanned()) {
-            throw new CustomUserMessageAuthenticationException('This account has been banned');
+        //Checks ban status
+        if($user->getIsBanned()) { //User is banned, we'll get the ban lift date or unban the user
+            $stillban = (count($user->getBans()) > 0) ? false : true; //no ban listed = forever
+            $endban = new \Datetime("now"); //Ban lift date
+            $today = new \Datetime("now"); //today, duh
+            foreach($user->getBans() as $ban) {
+              if($ban->getDateEnd() > $today) {
+                $stillban = true; //user has ban in activity, still banned
+                if($ban->getDateEnd() > $endban) $endban = $ban->getDateEnd(); //update ban lift
+              }
+            }
+            if($stillban) { //user is still banned
+              throw new CustomUserMessageAuthenticationException('This account has been banned - Ban lifts on '.$endban->format("d/m/Y"));
+            }
+            else { //user is not banned anymore
+              $user->setIsBanned(false);
+              $this->entityManager->flush();
+            }
         }
 
         return $user;

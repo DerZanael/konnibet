@@ -3,5 +3,16 @@
 {% block title %}{{site_name}} Administration home{% endblock %}
 
 {% block body %}
-This is sparta
+<h1>Welcome to {{site_name}} administration</h1>
+<div class="card-columns">
+  {% if is_granted("ROLE_SUPER_ADMIN") %}
+  <div class="card">
+    <div class="card-header"><h2 class="card-title">User management</h2></div>
+    <ul class="list-group list-group-flush">
+     <li class="list-group-item"><a href="{{path("admin_users")}}" title="User list">User list</a></li>
+     <li class="list-group-item"><a href="{{path("admin_users_add")}}" title="Add a new user">Add user</a></li>
+   </ul>
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

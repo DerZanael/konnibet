@@ -28,7 +28,7 @@ class UserFixtures extends Fixture
         // $manager->persist($product);
         $shig = new User();
         $shig->setEmail("francois@fdweb.fr");
-        $shig->setUsername("Shig");
+        $shig->setDisplayedName("Shig");
         $shig->setDateCreation(new \Datetime("now"));
         $shig->setIsValid(true);
         $shig->setIsBanned(false);
@@ -39,7 +39,7 @@ class UserFixtures extends Fixture
 
         $hogan = new User();
         $hogan->setEmail("hh@kn.local");
-        $hogan->setUserName("Hulk Hogan");
+        $hogan->setDisplayedName("Hulk Hogan");
         $hogan->setDateCreation(new \Datetime("now"));
         $hogan->setIsValid(false);
         $hogan->setIsBanned(false);
@@ -50,7 +50,7 @@ class UserFixtures extends Fixture
 
         $andre = new User();
         $andre->setEmail("andre@kn.local");
-        $andre->setUserName("Andre the Giant");
+        $andre->setDisplayedName("Andre the Giant");
         $andre->setDateCreation(new \Datetime("now"));
         $andre->setIsValid(true);
         $andre->setIsBanned(false);
@@ -61,7 +61,7 @@ class UserFixtures extends Fixture
 
         $rowdy = new User();
         $rowdy->setEmail("rrp@kn.local");
-        $rowdy->setUserName("Rowdy Roddy Piper");
+        $rowdy->setDisplayedName("Rowdy Roddy Piper");
         $rowdy->setDateCreation(new \Datetime("now"));
         $rowdy->setIsValid(true);
         $rowdy->setIsBanned(true);
@@ -72,7 +72,7 @@ class UserFixtures extends Fixture
 
         $shawn = new User();
         $shawn->setEmail("sexy@kn.local");
-        $shawn->setUserName("Shawn Michaels");
+        $shawn->setDisplayedName("Shawn Michaels");
         $shawn->setDateCreation(new \Datetime("now"));
         $shawn->setIsValid(true);
         $shawn->setIsBanned(false);
@@ -83,7 +83,7 @@ class UserFixtures extends Fixture
 
         $taker = new User();
         $taker->setEmail("dead@kn.local");
-        $taker->setUserName("The Undertaker");
+        $taker->setDisplayedName("The Undertaker");
         $taker->setDateCreation(new \Datetime("now"));
         $taker->setIsValid(false);
         $taker->setIsBanned(false);

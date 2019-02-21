@@ -13,12 +13,19 @@
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
       {% block stylesheets %}{% endblock %}{# custom css files inclusions #}
       {% block csslocal %}{% endblock %}{# custom css codes #}
+
       {# JQUERY POPPER BOOTSTRAP JS #}
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>{# bootstrap points to a slim version with bugs $.ajax instructions #}
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
       {# FONT AWESOME #}
       <script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js" integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+
+      {# WEBSITE JS #}
+      <script src="{{asset("scripts/global.js")}}"></script>
       {% block javascripts %}{% endblock %}{# JS libs and script files inclusions #}
   </head>
   <body id="topBody">
@@ -71,7 +78,10 @@
   <footer>
     <div class="bg-dark">
       <div class="container">
-        <p class="text-center text-light py-4">{{site_name}} : An experimental project - Cafted by <a href="http://www.fdweb.fr/" target="_blank" rel="noopened" class="text-primary"><i class="fa fa-external-link-square-alt"> </i> François Deschamps</a> - <a href="https://github.com/DerZanael/konnibet" target="_blank" rel="noopener" class="text-info"><i class="fab fa-github"></i> Github</a></p>
+        <p class="text-center text-light py-4">{{site_name}} : An experimental project -
+          Crafted by <a href="http://www.fdweb.fr/" target="_blank" rel="noopened" class="text-primary" title="Visit François Deschamps's website"><i class="fa fa-external-link-square-alt"> </i> François Deschamps</a> -
+          <a href="https://github.com/DerZanael/konnibet" target="_blank" rel="noopener" class="text-info" title="View this project's sources on GitHub !"><i class="fab fa-github"></i> Github</a>
+        </p>
       </div>
     </div>
   </footer>

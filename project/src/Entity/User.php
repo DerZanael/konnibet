@@ -38,7 +38,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $username;
+    private $displayedName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -85,9 +85,23 @@ class User implements UserInterface
      */
     private $bets;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Ban", mappedBy="user")
+     * @ORM\OrderBy({"dateLift"="DESC"})
+     */
+    private $bans;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Ban", mappedBy="admin")
+     * @ORM\OrderBy({"date"="DESC"})
+     */
+    private $bansGiven;
+
     public function __construct()
     {
         $this->bets = new ArrayCollection();
+        $this->bans = new ArrayCollection();
+        $this->bansGiven = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,9 +184,14 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function setUsername(string $username): self
+    public function getDisplayedName(): ?string
     {
-        $this->username = $username;
+        return $this->displayedName;
+    }
+
+    public function setDisplayedName(string $displayedName): self
+    {
+        $this->displayedName = $displayedName;
 
         return $this;
     }
@@ -298,6 +317,68 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($bet->getUser() === $this) {
                 $bet->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ban[]
+     */
+    public function getBans(): Collection
+    {
+        return $this->bans;
+    }
+
+    public function addBan(Ban $ban): self
+    {
+        if (!$this->bans->contains($ban)) {
+            $this->bans[] = $ban;
+            $ban->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBan(Ban $ban): self
+    {
+        if ($this->bans->contains($ban)) {
+            $this->bans->removeElement($ban);
+            // set the owning side to null (unless already changed)
+            if ($ban->getUser() === $this) {
+                $ban->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ban[]
+     */
+    public function getBansGiven(): Collection
+    {
+        return $this->bansGiven;
+    }
+
+    public function addBansGiven(Ban $bansGiven): self
+    {
+        if (!$this->bansGiven->contains($bansGiven)) {
+            $this->bansGiven[] = $bansGiven;
+            $bansGiven->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBansGiven(Ban $bansGiven): self
+    {
+        if ($this->bansGiven->contains($bansGiven)) {
+            $this->bansGiven->removeElement($bansGiven);
+            // set the owning side to null (unless already changed)
+            if ($bansGiven->getAdmin() === $this) {
+                $bansGiven->setAdmin(null);
             }
         }
 
